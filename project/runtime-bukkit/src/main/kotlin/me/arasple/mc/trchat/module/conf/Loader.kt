@@ -52,10 +52,11 @@ object Loader {
 
         if (!folder.exists()) {
             arrayOf(
-                "Normal.yml",
-                "Global.yml",
-                "Staff.yml",
-                "Private.yml"
+                "普通.yml",
+                "本地.yml",
+                "全服.yml",
+                "管理.yml",
+                "私聊.yml"
             ).forEach { releaseResourceFile("channels/$it", replace = true) }
             newFile(File(getDataFolder(), "data"), folder = true)
         }

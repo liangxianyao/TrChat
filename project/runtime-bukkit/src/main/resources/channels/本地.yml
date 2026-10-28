@@ -1,0 +1,43 @@
+# 本地频道：同一世界 100 格范围内可见。
+Options:
+  Join-Permission: ''
+  Listen-Permission: ''
+  Target: DISTANCE;100
+  Always-Listen: true
+  Proxy: false
+  Force-Proxy: false
+  Disabled-Functions: []
+
+Bindings:
+  Command: ['local']
+
+Formats:
+  - condition: null
+    prefix:
+      channel:
+        text: '&8[&a本地&8] '
+      player:
+        text: '&f%player_name%'
+        hover: '&7点击私聊'
+        suggest: '/msg %player_name% '
+      message:
+        text: '&8» &r'
+    msg:
+      default-color: 'f'
+      special-char:
+        enabled: false
+        special-char-color: '&f'
+
+Console:
+  - prefix:
+      channel:
+        text: '&8[&a本地&8] '
+      player:
+        text: '&f%player_name%'
+      message:
+        text: '&8» &r'
+    msg:
+      default-color: 'f'
+      special-char:
+        enabled: false
+        special-char-color: '&f'

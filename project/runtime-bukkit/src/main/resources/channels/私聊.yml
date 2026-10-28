@@ -10,7 +10,7 @@ Bindings:
 Sender:
   - prefix:
       sender:
-        text: '&8[&a%player_name% &7➦ %trchat_toplayer%&3&8] '
+        text: '&8[&d私聊&8] [&a%player_name% &7➦ %trchat_toplayer%&8] '
     msg:
       default-color: 'f'
       special-char:
@@ -21,7 +21,7 @@ Sender:
 Receiver:
   - prefix:
       receiver:
-        text: '&8[&6%player_name% &7➥ &2%trchat_toplayer%&8] '
+        text: '&8[&d私聊&8] [&6%player_name% &7➥ &2%trchat_toplayer%&8] '
     msg:
       default-color: 'f'
       special-char:
@@ -33,7 +33,7 @@ Receiver:
 Console:
   - prefix:
       server:
-        text: '&8[&6CONSOLE &7➥ &2you&8] '
+        text: '&8[&d私聊&8] [&6控制台 &7➥ &2你&8] '
     msg:
       default-color: 'f'
       special-char:

@@ -1,7 +1,7 @@
 taboolib {
     description {
         name(rootProject.name)
-        desc("Advanced Minecraft Chat Control")
+        desc("Minecraft 聊天管理插件")
         links {
             name("homepage").url("https://trchat.trixey.cc/")
         }

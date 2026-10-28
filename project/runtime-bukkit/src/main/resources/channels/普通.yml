@@ -12,6 +12,8 @@ Formats:
         special-char-color: '&f'
       hover: '&7Date: %server_time_HH:mm:ss%'
     prefix:
+      channel:
+        text: '&8[&a普通&8] '
       world:
         text: '&8[&3%player_world%&8]'
         hover: |-

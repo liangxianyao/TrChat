@@ -9,15 +9,15 @@ Bindings:
 Formats:
   - prefix:
       staff:
-        text: '&8[&cSTAFF&8] '
+        text: '&8[&c管理&8] '
         hover: |-
-          &7Server &3%server_name%
+          &7服务器 &3%server_name%
           &f
-          &7Version: &6%server_version%
-          &7Online: &a%server_online%&7/&2%server_max_players%
-          &7TPS: &b%server_tps%
+          &7版本：&6%server_version%
+          &7在线：&a%server_online%&7/&2%server_max_players%
+          &7TPS：&b%server_tps%
           &7
-          &a▶ &2Click to connect to this server
+          &a▶ &2点击连接到此服务器
         command: '/server %server_name%'
       player:
         text: '&e%player_name%&8: '
