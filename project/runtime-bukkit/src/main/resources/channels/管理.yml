@@ -19,6 +19,8 @@ Formats:
           &7
           &a▶ &2点击连接到此服务器
         command: '/server %server_name%'
+      player-title:
+        text: ' %luckperms_prefix% %playerTitle_use% '
       player:
         text: '&e%player_name%&8: '
     msg:

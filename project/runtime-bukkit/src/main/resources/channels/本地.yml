@@ -16,6 +16,8 @@ Formats:
     prefix:
       channel:
         text: '&8[&a本地&8] '
+      player-title:
+        text: ' %luckperms_prefix% %playerTitle_use% '
       player:
         text: '&f%player_name%'
         hover: '&7点击私聊'
