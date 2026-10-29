@@ -11,10 +11,12 @@ import me.arasple.mc.trchat.module.display.format.MsgComponent
 import me.arasple.mc.trchat.module.display.function.Function
 import me.arasple.mc.trchat.module.internal.TrChatBukkit
 import me.arasple.mc.trchat.module.internal.data.ChatLogs
+import me.arasple.mc.trchat.module.internal.data.Databases
 import me.arasple.mc.trchat.module.internal.service.Metrics
 import me.arasple.mc.trchat.util.*
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import net.luckperms.api.LuckPermsProvider
 import taboolib.common.platform.command.PermissionDefault
 import taboolib.common.platform.command.command
 import taboolib.common.platform.function.adaptPlayer
@@ -154,8 +156,6 @@ open class Channel(
         val msg = events.process(player, event.component)
             ?: return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.EVENT)
         plain = msg.toPlainText()
-        ChatLogs.logNormal(player.name, plain)
-        Metrics.increase(0)
 
         var component = Components.empty()
         var mentioned = emptySet<String>()
@@ -180,6 +180,40 @@ open class Channel(
             return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.EVENT)
         }
         component = sendEvent.component
+
+        settings.dailyLimit?.let { daily ->
+            if (!player.isOnline) {
+                return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.LIMITED)
+            }
+            if (!player.hasPermission("trchat.bypass.*")) {
+                val primaryGroup = try {
+                    LuckPermsProvider.get().userManager.getUser(player.uniqueId)?.primaryGroup
+                } catch (e: LinkageError) {
+                    null
+                } catch (e: IllegalStateException) {
+                    null
+                } catch (e: RuntimeException) {
+                    e.print("Failed to resolve LuckPerms primary group")
+                    player.sendLang("Channel-Daily-Limit-Unavailable")
+                    return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.LIMITED)
+                }
+                val limit = daily.limitFor(primaryGroup)
+                when (Databases.reserveDailyMessage(player.uniqueId, daily.date(), limit)) {
+                    Databases.DailyLimitResult.ALLOWED -> Unit
+                    Databases.DailyLimitResult.EXCEEDED -> {
+                        player.sendLang("Channel-Daily-Limit-Reached", limit)
+                        return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.LIMITED)
+                    }
+                    Databases.DailyLimitResult.UNAVAILABLE -> {
+                        player.sendLang("Channel-Daily-Limit-Unavailable")
+                        return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.LIMITED)
+                    }
+                }
+            }
+        }
+
+        ChatLogs.logNormal(player.name, plain)
+        Metrics.increase(0)
 
         if (player.data.isShadowMuted) {
             if (events.send(player, player.name, plain)) {

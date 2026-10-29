@@ -8,6 +8,7 @@ import me.arasple.mc.trchat.module.display.channel.obj.ChannelBindings
 import me.arasple.mc.trchat.module.display.channel.obj.ChannelEvents
 import me.arasple.mc.trchat.module.display.channel.obj.ChannelRange
 import me.arasple.mc.trchat.module.display.channel.obj.ChannelSettings
+import me.arasple.mc.trchat.module.display.channel.obj.DailyLimitSettings
 import me.arasple.mc.trchat.module.display.format.Format
 import me.arasple.mc.trchat.module.display.format.Group
 import me.arasple.mc.trchat.module.display.format.JsonComponent
@@ -38,6 +39,8 @@ import taboolib.library.configuration.ConfigurationSection
 import taboolib.module.configuration.util.getMap
 import taboolib.module.lang.sendLang
 import java.io.File
+import java.time.ZoneId
+import java.util.Locale
 import kotlin.system.measureTimeMillis
 
 /**
@@ -122,10 +125,22 @@ object Loader {
             val sendToDiscord = section.getBoolean("Send-To-Discord", !isPrivate)
             val receiveFromDiscord = section.getBoolean("Receive-From-Discord", true)
             val discordChannel = section.getString("Discord-Channel", "")!!
+            val dailyLimit = section.getConfigurationSection("Daily-Limit")?.let { quota ->
+                val defaultLimit = quota.getInt("Default", 10)
+                require(defaultLimit >= -1) { "Daily-Limit.Default must be >= -1" }
+                val groups = quota.getConfigurationSection("Groups")?.let { groupSection ->
+                    groupSection.getKeys(false).associate { name ->
+                        val amount = groupSection.getInt(name, Int.MIN_VALUE)
+                        require(amount >= -1) { "Invalid daily limit for group $name" }
+                        name.lowercase(Locale.ROOT) to amount
+                    }
+                } ?: emptyMap()
+                DailyLimitSettings(defaultLimit, groups, ZoneId.of(quota.getString("Timezone", "Asia/Shanghai")))
+            }
             ChannelSettings(
                 joinPermission, listenPermission, speakCondition, alwaysListen, isPrivate,
                 range, proxy, forceProxy, doubleTransfer, ports, disabledFunctions, filterBeforeSending,
-                sendToDiscord, receiveFromDiscord, discordChannel
+                sendToDiscord, receiveFromDiscord, discordChannel, dailyLimit
             )
         }
 

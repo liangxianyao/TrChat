@@ -10,10 +10,12 @@ dependencies {
     compileOnly(project(":project:module-nms"))
     compileOnly("ink.ptms.core:v260100:260100")
     compileOnly("net.md-5:bungeecord-chat:1.21-R0.3")
-    compileOnly(fileTree(rootDir.resolve("libs")))
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.12.2") { isTransitive = false }
     compileOnly("com.discordsrv:discordsrv:1.26.0") { isTransitive = false }
+    compileOnly("net.luckperms:api:5.3")
+    testImplementation("junit:junit:4.10")
 }
 
 taboolib { subproject = true }

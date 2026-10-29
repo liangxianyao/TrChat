@@ -11,6 +11,7 @@ taboolib {
         }
         dependencies {
             name("PlaceholderAPI").with("bukkit")
+            name("LuckPerms").with("bukkit").optional(true)
             name("DiscordSRV").with("bukkit").optional(true)
             name("EcoEnchants").with("bukkit").optional(true)
             name("ItemsAdder").with("bukkit").optional(true)
@@ -33,16 +34,24 @@ dependencies {
 }
 
 tasks {
+    val paperModules = listOf(
+        ":project:common",
+        ":project:module-adventure",
+        ":project:module-chat",
+        ":project:module-compat",
+        ":project:module-nms",
+        ":project:runtime-bukkit"
+    )
     jar {
         // 构件名
         archiveBaseName.set(rootProject.name)
         // 打包子项目源代码
-        rootProject.subprojects.forEach { from(it.sourceSets["main"].output) }
+        paperModules.forEach { from(project(it).sourceSets["main"].output) }
     }
     sourcesJar {
         // 构件名
         archiveBaseName.set(rootProject.name)
         // 打包子项目源代码
-        rootProject.subprojects.forEach { from(it.sourceSets["main"].allSource) }
+        paperModules.forEach { from(project(it).sourceSets["main"].allSource) }
     }
 }
