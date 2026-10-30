@@ -6,19 +6,19 @@ Options:
   Always-Listen: true
   # 全服频道每天允许发送的次数；按 Asia/Shanghai 自然日重置
   Daily-Limit:
-    # 没有匹配到下列主组时的每日次数；-1 表示不限量
+    # 所有玩家的每日基础次数；-1 表示不限量
     Default: 10
     # 每日次数重置所用的时区
     Timezone: 'Asia/Shanghai'
-    # LuckPerms 主组名称对应的每日次数
+    # 按玩家拥有的 LuckPerms 组计算额外次数；多组取最高值，不叠加；-1 表示不限量
     Groups:
-      # 普通玩家每日 10 次
-      default: 10
-      # VIP1 每日 20 次
+      # 普通组不额外增加，基础共 10 次
+      default: 0
+      # VIP1 额外 20 次，合计 30 次
       vip1: 20
-      # VIP2 每日 30 次
+      # VIP2 额外 30 次，合计 40 次
       vip2: 30
-      # VIP3 每日 40 次
+      # VIP3 额外 40 次，合计 50 次
       vip3: 40
       # 管理人员不限制次数
       moderator: -1
@@ -33,7 +33,10 @@ Formats:
   - condition: null
     prefix:
       channel:
-        text: '&8[&c全服&8] '
+        text: '&7[%server_time_HH:mm:ss%] &8[&c全服&8] '
+      world:
+        text: '&8[&3%multiverse-core_alias%&8] '
+        hover: '&7所在世界：&3%multiverse-core_alias%'
       server:
         text: '&8[&3%server_name%&8] '
         hover: |-

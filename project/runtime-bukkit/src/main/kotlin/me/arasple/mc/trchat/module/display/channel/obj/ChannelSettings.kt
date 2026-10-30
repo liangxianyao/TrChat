@@ -16,7 +16,15 @@ data class DailyLimitSettings(
         require(groups.values.all { it >= -1 }) { "Group daily limits must be >= -1" }
     }
 
-    fun limitFor(primaryGroup: String?): Int = groups[primaryGroup?.lowercase(Locale.ROOT)] ?: defaultLimit
+    fun limitFor(primaryGroup: String?): Int {
+        return limitForGroups(listOfNotNull(primaryGroup))
+    }
+
+    fun limitForGroups(groupNames: Iterable<String>): Int {
+        val extraLimits = groupNames.mapNotNull { groups[it.lowercase(Locale.ROOT)] }
+        if (defaultLimit < 0 || extraLimits.any { it < 0 }) return -1
+        return defaultLimit + (extraLimits.maxOrNull() ?: 0)
+    }
 
     fun date(clock: Clock = Clock.systemUTC()): LocalDate = LocalDate.now(clock.withZone(timeZone))
 }

@@ -186,18 +186,27 @@ open class Channel(
                 return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.LIMITED)
             }
             if (!player.hasPermission("trchat.bypass.*")) {
-                val primaryGroup = try {
-                    LuckPermsProvider.get().userManager.getUser(player.uniqueId)?.primaryGroup
+                val playerGroups = try {
+                    val luckPerms = LuckPermsProvider.get()
+                    val user = luckPerms.userManager.getUser(player.uniqueId)
+                    if (user == null) {
+                        emptySet()
+                    } else {
+                        val queryOptions = luckPerms.contextManager.getQueryOptions(player)
+                        user.getInheritedGroups(queryOptions).map { it.name }.toMutableSet().apply {
+                            add(user.primaryGroup)
+                        }
+                    }
                 } catch (e: LinkageError) {
-                    null
+                    emptySet()
                 } catch (e: IllegalStateException) {
-                    null
+                    emptySet()
                 } catch (e: RuntimeException) {
-                    e.print("Failed to resolve LuckPerms primary group")
+                    e.print("Failed to resolve LuckPerms groups")
                     player.sendLang("Channel-Daily-Limit-Unavailable")
                     return ChannelExecuteResult(failedReason = ChannelExecuteResult.FailReason.LIMITED)
                 }
-                val limit = daily.limitFor(primaryGroup)
+                val limit = daily.limitForGroups(playerGroups)
                 when (Databases.reserveDailyMessage(player.uniqueId, daily.date(), limit)) {
                     Databases.DailyLimitResult.ALLOWED -> Unit
                     Databases.DailyLimitResult.EXCEEDED -> {

@@ -23,9 +23,9 @@ public class TrChatGlobalDailyLimitPolicyTest {
 
     @Test public void resolvesNormalAndVipGroups() {
         assertEquals(10, settings().limitFor("default"));
-        assertEquals(20, settings().limitFor("VIP1"));
-        assertEquals(30, settings().limitFor("vip2"));
-        assertEquals(40, settings().limitFor("vip3"));
+        assertEquals(30, settings().limitFor("VIP1"));
+        assertEquals(40, settings().limitFor("vip2"));
+        assertEquals(50, settings().limitFor("vip3"));
     }
 
     @Test public void unlimitedAndMissingGroups() {

@@ -12,7 +12,7 @@ Sender:
       player-title:
         text: ' %luckperms_prefix% %playerTitle_use% '
       sender:
-        text: '&8[&d私聊&8] [&a%player_name% &7➦ %trchat_toplayer%&8] '
+        text: '&7[%server_time_HH:mm:ss%] &8[&d私聊&8] [&a%player_name% &7➦ %trchat_toplayer%&8] '
     msg:
       default-color: 'f'
       special-char:
@@ -25,7 +25,7 @@ Receiver:
       player-title:
         text: ' %luckperms_prefix% %playerTitle_use% '
       receiver:
-        text: '&8[&d私聊&8] [&6%player_name% &7➥ &2%trchat_toplayer%&8] '
+        text: '&7[%server_time_HH:mm:ss%] &8[&d私聊&8] [&6%player_name% &7➥ &2%trchat_toplayer%&8] '
     msg:
       default-color: 'f'
       special-char:

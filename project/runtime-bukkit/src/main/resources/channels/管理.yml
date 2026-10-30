@@ -9,7 +9,7 @@ Bindings:
 Formats:
   - prefix:
       staff:
-        text: '&8[&c管理&8] '
+        text: '&7[%server_time_HH:mm:ss%] &8[&c管理&8] '
         hover: |-
           &7服务器 &3%server_name%
           &f

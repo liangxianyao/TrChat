@@ -15,7 +15,7 @@ Formats:
   - condition: null
     prefix:
       channel:
-        text: '&8[&a本地&8] '
+        text: '&7[%server_time_HH:mm:ss%] &8[&a本地&8] '
       player-title:
         text: ' %luckperms_prefix% %playerTitle_use% '
       player:
